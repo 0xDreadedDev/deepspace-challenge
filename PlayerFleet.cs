@@ -15,8 +15,8 @@ namespace DeepSpace.Player
   public class PlayerFleet
   {
     public string id { get; set; }
-    public string fleetType { get; set; }
-    public string playerAddress { get; set; }
+    public string type { get; set; }
+    public string playerAddr { get; set; }
     public int[] shipIds { get; set; }
 
     public PlayerFleet()

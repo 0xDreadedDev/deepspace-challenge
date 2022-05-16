@@ -36,7 +36,7 @@ namespace DeepSpace.Player
             ContainerProperties containerProps = new ContainerProperties()
             {
                 Id = Environment.GetEnvironmentVariable("FleetContainerName"),
-                PartitionKeyPath = "/playerAddress",
+                PartitionKeyPath = "/playerAddr",
                 IndexingPolicy = new IndexingPolicy()
                 {
                     Automatic = false,
@@ -46,9 +46,9 @@ namespace DeepSpace.Player
 
             Container container = (await db.CreateContainerIfNotExistsAsync(containerProps)).Container;
 
-            ItemResponse<PlayerFleet> item = await container.CreateItemAsync<PlayerFleet>(fleet, new PartitionKey(fleet.playerAddress));
+            ItemResponse<PlayerFleet> item = await container.CreateItemAsync<PlayerFleet>(fleet, new PartitionKey(fleet.playerAddr));
 
-            return new StatusCodeResult(((int) item.StatusCode));
+            return new StatusCodeResult((int) item.StatusCode);
         }
     }
 }
