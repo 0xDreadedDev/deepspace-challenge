@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.Cosmos;
+using System.Collections.Generic;
 
 namespace DeepSpace.Player
 {
@@ -55,7 +56,7 @@ namespace DeepSpace.Player
                     MaxItemCount = 1
                 }))
             {
-                dynamic matchedItems = null;
+                dynamic matchedItems = new List<dynamic>();
                 while (setIterator.HasMoreResults)
                 {
                     using (ResponseMessage response = await setIterator.ReadNextAsync())
@@ -66,12 +67,13 @@ namespace DeepSpace.Player
                         using (JsonTextReader jtr = new JsonTextReader(sr))
                         {
                             JsonSerializer jsonSerializer = new JsonSerializer();
-                            matchedItems = jsonSerializer.Deserialize<dynamic>(jtr).Documents;
+                            dynamic item = jsonSerializer.Deserialize<dynamic>(jtr).Documents;
+                            matchedItems.Add(item);
                         }
                     }
                 }
 
-                return new OkObjectResult(matchedItems ?? new dynamic[0]);
+                return new OkObjectResult(matchedItems);
             }
         }
     }
